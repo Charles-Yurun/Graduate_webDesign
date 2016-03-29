@@ -1,0 +1,98 @@
+{% from "snippet/macro.html" import form_field %}
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Simi">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/static/img/favicon.html">
+
+    <title>忘记密码 — {{ config.SITE_TITLE }}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/bootstrap-reset.css" rel="stylesheet">
+    <!--external css-->
+    <link href="/static/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="/static/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/static/css/owl.carousel.css" type="text/css">
+    <!-- Custom styles for this template -->
+    <link href="/static/css/style.css" rel="stylesheet">
+    <link href="/static/css/style-responsive.css" rel="stylesheet" />
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
+    <!--[if lt IE 9]>
+      <script src="/static/js/html5shiv.js"></script>
+      <script src="/static/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+  <section id="container" class="">
+      <!--main content start-->
+      <section class="wrapper">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for cat, msg in messages %}
+                <div class="alert alert-{{ cat }} alert-dismissable">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                  {{ msg }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+          <div class="container">
+      <form id="findForm" class="form-signin" method="post" action="">
+        <h2 class="form-signin-heading">忘记密码</h2>
+        <div class="login-wrap">
+            <p>输入您的用户名或者注册邮箱来重置密码</p>
+            {{ form.csrf_token }}
+            {{ form_field(form.account, False) }}
+            <button class="btn btn-lg btn-info btn-block" type="submit">发送邮件</button>
+            <br />
+            <p>
+                <a href="{{ url_for('account.signin') }}">登录</a>
+            </p>
+        </div>
+      </form>
+    </div>
+      </section>
+      <!--main content end-->
+  </section>
+
+    <script src="/static/js/jquery.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="/static/js/jquery.validate.min.js"></script>
+    <script type="text/javascript">
+        var Script = function () {
+
+            //    $.validator.setDefaults({
+            //        submitHandler: function() {  }
+            //    });
+
+                $().ready(function() {
+                    // validate signup form on keyup and submit
+                    $("#findForm").validate({
+                        rules: {
+                            account: {
+                                required: true,
+                                minlength: 2
+                            }
+                        },
+                        messages: {
+                            account: {
+                                required: "请输入用户名或者注册邮箱",
+                                minlength: "至少为4个字符"
+                            }
+                        }
+                    });
+                });
+            }();
+    </script>
+  </body>
+</html>

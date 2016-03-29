@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{% block subtitle %}首页{% endblock %}
+{% block main %}
+  <div class="col-md-12">
+      <h3>首页</h3>
+  </div>
+{% endblock %}
+
+<script type="text/javascript">
+    $('#college_today').find('a').click(function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+        alert('hello')
+        console.log('hello')
+    })
+</script>
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel">
+                <div class="panel-body">
+                    <ul id="guet_main_news" class="nav nav-tabs">
+                        <li role="presentation" class="active" id="college_today">
+                            <a href=#  data-toggle="tab">今日快讯</a></li>
+                        <li role="presentation"><a data-toggle="tab">昨日旧闻</a ></li>
+                    </ul>
+                    <div id="mews_content" class="tab-content">
+                        <div id="content"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel">
+                <div class="panel-body">
+                    <ul id="guet_work_news" class="nav nav-tabs">
+                        <li role="presentation" class="active">
+                            <a href="#" id="work_today" data-toggle="tab">今日招聘</a>
+                        </li>
+                        <li role="presentation" class="nav nav-tabs">
+                            <a href="#" id="work_tommorrow" data-toggle="tab">明日招聘</a>
+                        </li>
+                        <li role="presentation" class="nav nav-tabs">
+                            <a href="#" id="work_week" data-toggle="tab">未来一周</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+</script>
+{% endblock %}

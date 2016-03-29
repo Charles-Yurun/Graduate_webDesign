@@ -1,0 +1,92 @@
+{% extends "admin_layout.html" %}
+{% block subtitle %}用户管理{% endblock %}
+{% from "snippet/macro.html" import admin_menu, form_field, pager %}
+
+{% block left_menu %}
+    {{ admin_menu('user') }}
+{% endblock %}
+
+{% block main %}
+  <div class="row">
+      <div class="col-lg-12">
+          <!--breadcrumbs start -->
+          <ul class="breadcrumb">
+              <li><a href="{{ url_for('admin.index') }}"><i class="fa fa-home"></i> 首页</a></li>
+              <li><a href="{{ url_for('admin.user') }}">用户管理</a></li>
+              <li class="active">用户列表({{ count }})</li>
+          </ul>
+          <!--breadcrumbs end -->
+      </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <section class="panel">
+          <header class="panel-heading">
+              <form class="form-inline" role="form">
+                  {{ form_field(form.keyword, False) }}
+                  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"> 搜索</span></button>
+              </form>
+          </header>
+          <div class="panel-body">
+                {% if users %}
+                    <table class="table table-bordered table-striped table-condensed">
+                        <thead>
+                            <tr>
+                                <th>用户名</th>
+                                <th>角色</th>
+                                <th>状态</th>
+                                <th>邮箱</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in users %}
+                            <tr>
+                                <td>{{ item.get('username') }}</td>
+                                <td>
+                                {% if item.get('roles') %}
+                                    {% for role in item.get('roles') %}
+                                        {% if role == "new" %}
+                                            <label class="label label-info">新用户</label>
+                                        {% elif role == "admin" %}
+                                            <label class="label label-info">管理员</label>
+                                        {% else %}
+                                            <label class="label" >{{ role }}</label>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                                </td>
+                                <td>
+                                    {% if item.get('state') == 1 %}
+                                        {{ '正常' }}
+                                    {% elif item.get('state') == 2 %}
+                                        {{ '禁用' }}
+                                    {% else %}
+                                        {{ item.get('state') }}
+                                    {% endif %}
+                                </td>
+                                <td><a href="mailto:{{ item.get('email') }}">{{ item.get('email') }}</a></td>
+
+                                <td><a href="{{ url_for('admin.edit_user', id=item.id) }}"><i class="fa fa-edit"></i> 编辑</a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="text-center">
+                      <Strong>没有相关记录</Strong>
+                    </p>
+                {% endif %}
+                {% if pages > 1 %}
+                    {{ pager(page, pages, url_for('admin.user',keyword=form.keyword.data)) }}
+                {% endif %}
+          </div>
+      </section>
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+</script>
+{% endblock %}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% block subtitle %}{% endblock %} - {{ config.SITE_TITLE }}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ static_url('app.css') }}">
+    <script src="{{ static_url('app.js') }}"></script>
+    <script src="{{ static_url('js/jquery.js') }}"></script>
+    <script type=text/javascript>
+      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    {% block afterstyle %}{% endblock %}
+</head>
+<body>
+{% from "snippet/macro.html" import navigation %}
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse">
+             {% block nav %}
+                {{ navigation() }}
+             {% endblock %}
+        </div>
+    </div>
+</div>
+<div id="wrap">
+    <div class="main container">
+        <div class="row">
+            <div class="col-md-12">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</div>
+{#{% block footer %}#}
+{#    {% include "snippet/footer.html" %}#}
+{#{% endblock %}#}
+<script>require('webSite')</script>
+{% block afterscript %}{% endblock %}
+</body>
+</html>
