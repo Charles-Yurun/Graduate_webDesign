@@ -1,49 +1,92 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% block subtitle %}{% endblock %} - {{ config.SITE_TITLE }}{% endblock %}</title>
-    <link rel="stylesheet" href="{{ static_url('app.css') }}">
-    <script src="{{ static_url('app.js') }}"></script>
-    <script src="{{ static_url('js/jquery.js') }}"></script>
-    <script type=text/javascript>
-      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-    </script>
-    {% block afterstyle %}{% endblock %}
+    <meta name="description" content="">
+    <meta name="author" content="Simi">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/static/img/favicon.png">
+
+    <title>{% block title %}{% block subtitle %}{% endblock %} — {{ config.SITE_TITLE }}{% endblock %}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/bootstrap-reset.css" rel="stylesheet">
+    <!--external css-->
+    <link href="/static/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="/static/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/static/css/owl.carousel.css" type="text/css">
+
+    <!--right slidebar-->
+    <link href="/static/css/slidebars.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/style.css" rel="stylesheet">
+    <link href="/static/css/style-responsive.css" rel="stylesheet" />
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
+    <!--[if lt IE 9]>
+      <script src="/static/js/html5shiv.js"></script>
+      <script src="/static/js/respond.min.js"></script>
+    <![endif]-->
+    {% block style %}{% endblock %}
 </head>
-<body>
-{% from "snippet/macro.html" import navigation %}
-<div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-        </div>
-        <div class="navbar-collapse collapse">
-             {% block nav %}
-                {{ navigation() }}
-             {% endblock %}
-        </div>
-    </div>
-</div>
-<div id="wrap">
-    <div class="main container">
-        <div class="row">
-            <div class="col-md-12">
-                {% block content %}
-                {% endblock %}
-            </div>
-        </div>
-    </div>
-</div>
-{#{% block footer %}#}
-{#    {% include "snippet/footer.html" %}#}
-{#{% endblock %}#}
-<script>require('webSite')</script>
-{% block afterscript %}{% endblock %}
+
+<body class="mega-nav">
+<section id="container" >
+    <!--header start-->
+    <header class="header blue-bg">
+        <!--logo start-->
+        <a href="{{ url_for('front.index') }}" class="logo"><span>桂林电子科技大学</span>新闻汇总平台</a>
+        <!--logo end-->
+    </header>
+    <!--header end-->
+    <!--main content start-->
+    <section id="main-content">
+        <section class="wrapper">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for cat, msg in messages %}
+                        <div class="alert alert-{{ cat }} alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            {{ msg }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+
+            {% block main %}
+                    {% block content %}{% endblock %}
+            {% endblock %}
+        </section>
+    </section>
+    <!--main content end-->
+</section>
+
+<!-- js placed at the end of the document so the pages load faster -->
+<script src="/static/js/jquery.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script class="include" type="text/javascript" src="/static/js/jquery.dcjqaccordion.2.7.js"></script>
+<script src="/static/js/jquery.scrollTo.min.js"></script>
+<script src="/static/js/jquery.nicescroll.js" type="text/javascript"></script>
+<script src="/static/js/jquery.sparkline.js" type="text/javascript"></script>
+<script src="/static/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js"></script>
+<script src="/static/js/owl.carousel.js" ></script>
+<script src="/static/js/jquery.customSelect.min.js" ></script>
+<script src="/static/js/respond.min.js" ></script>
+
+<!--right slidebar-->
+<script src="/static/js/slidebars.min.js"></script>
+
+<!--common script for all pages-->
+<script src="/static/js/common-scripts.js"></script>
+<script src="/static/js/common.js"></script>
+
+
+{% block script %}{% endblock %}
 </body>
 </html>
+

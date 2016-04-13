@@ -102,9 +102,12 @@ def register_jinja(app):
     app.jinja_env.filters['markdown'] = filters.markdown
     app.jinja_env.filters['timesince'] = filters.timesince
     app.jinja_env.filters['xmldatetime'] = filters.xmldatetime
+    app.jinja_env.filters['_datetime'] = filters._datetime
     app.jinja_env.filters['date'] = filters.date
     app.jinja_env.filters['youtube'] = filters.youtube
 
+    app.jinja_env.filters['college_type'] = filters.college_type
+    app.jinja_env.filters['work_type'] = filters.work_type
 
 def register_database(app):
     """Database related configuration."""

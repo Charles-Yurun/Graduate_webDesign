@@ -16,8 +16,18 @@ type_to_name = {3: '就业公告',
                 }
 
 
+@bp.route('/')
+def index():
+    page = int(request.args.get('page', 1))
+    if not page:
+        return abort(404)
+    paginator = BaseQuery(query_class='Work', descend_key='news_time').paginate(page, 20)
+    return render_template('work/index.html', paginator=paginator,
+                           endpoint='work.index')
+
+
 @bp.route('/news_type=<news_type>')
-def index(news_type):
+def index_type(news_type):
     if news_type is None:
         news_type = 1
     else:
@@ -26,9 +36,9 @@ def index(news_type):
     if not page:
         return abort(404)
     paginator = BaseQuery('Work', news_type, 'news_time').paginate(page, 20)
-    return render_template('work/index.html', paginator=paginator,
-                           endpoint='work.index', news_type=news_type,
-                           news_title=type_to_name[news_type])
+    return render_template('work/index_type.html', paginator=paginator,
+                           endpoint='work.index_type', news_type=news_type,
+                           news_title=type_to_name.get(news_type))
 
 
 @bp.route('/news_id=<id>', methods=['GET'])
@@ -36,4 +46,4 @@ def content(id):
     if id is None:
         abort(404)
     news = Query(Object.extend('Work')).get(id)
-    return render_template('work/content.html', news = news)
+    return render_template('work/content.html', news=news)

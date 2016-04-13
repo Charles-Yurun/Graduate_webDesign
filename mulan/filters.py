@@ -12,9 +12,9 @@ from pygments.formatters import HtmlFormatter
 def _iframe(src, width=650, height=365, content=None, link=None):
     """Create an iframe html snippet."""
     html = (
-        '<iframe width="%s" height="%s" src="%s" '
-        'frameborder="0" allowfullscreen></iframe>'
-    ) % (width, height, src)
+               '<iframe width="%s" height="%s" src="%s" '
+               'frameborder="0" allowfullscreen></iframe>'
+           ) % (width, height, src)
     if not content:
         return html
     if link:
@@ -152,10 +152,10 @@ class BaseRenderer(m.HtmlRenderer):
         pattern = r'%s$' % match.group(0)
         content = re.sub(pattern, match.group(2), content)
         return (
-            '<blockquote class="cite-quote">'
-            '%s<cite>%s</cite>'
-            '</blockquote>'
-        ) % (content, text)
+                   '<blockquote class="cite-quote">'
+                   '%s<cite>%s</cite>'
+                   '</blockquote>'
+               ) % (content, text)
 
 
 class HighlightRenderer(BaseRenderer):
@@ -252,7 +252,37 @@ def xmldatetime(value):
         return value
     return value.strftime('%Y-%m-%dT%H:%M:%SZ')
 
+
+def _datetime(value):
+    if not isinstance(value, datetime.datetime):
+        return value
+    return value.strftime('%Y-%m-%d %H:%M:%S')
+
+
 def date(value):
     if not isinstance(value, datetime.datetime):
         return value
     return value.strftime('%Y-%m-%d')
+
+
+def college_type(value):
+    college_type_dir = {1: '桂电要闻',
+                        2: '校园快讯',
+                        4: '校内通知',
+                        6: '学术会议',
+                        8: '学院动态',
+                        9: '媒体桂电',
+                        10: '公 告'}
+
+    return college_type_dir.get(value)
+
+
+def work_type(value):
+    work_type_dir = {
+        3: '就业公告',
+        4: '就业新闻',
+        13: '每周来校招聘单位',
+        15: '用人单位来校招聘信息发布',
+        16: '用人单位网络招聘信息发布'
+    }
+    return work_type_dir.get(value)

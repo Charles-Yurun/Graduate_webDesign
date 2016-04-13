@@ -1,26 +1,25 @@
 {% extends "layout.html" %}
 
-{% block subtitle %}{{ node }}{% endblock %}
+{% block subtitle %}{{ news.get('news_title') }}{% endblock %}
 
 {% from "snippet/macro.html" import navigation, topic_columns, pagination %}
 
-{% block nav %}
-  {{ navigation('CollegeDynamics') }}
-{% endblock %}
 
 {% block content %}
-    <div class="panel panel-default hentry">
-        <div class="panel-heading">
-            <div class="panel-title entry-title center-block" align="center">
-                    <strong>{{ news.get('news_title') }}</strong>
+    <section class="panel panel-info">
+        <header class="panel-heading">
+            <div class="panel-title" align="center">
+                <strong>{{ news.get('news_title') }}</strong>
             </div>
-            <div class="panel-body entry-content">
-                <div align="center">发布时间：{{ news.get('news_time')|safe }}</div>
-                <div class="fa-flash">{{ news.get('news_content')|safe }}</div>
-                <div class="panel-footer" align="right">
-                    <a href="{{ news.get('news_url')|safe }}">查看原文</a>
-                </div>
-            </div>
+
+        </header>
+        <div class="panel-body">
+            <div align="center">发布时间：{{ news.get('news_time')|safe }}</div>
+            <div class="content">{{ news.get('news_content')|safe }}</div>
+
         </div>
-    </div>
+        <div class="panel-footer panel-info" align="right">
+            <a href="{{ news.get('news_url')|safe }}">查看原文</a>
+        </div>
+    </section>
 {% endblock %}

@@ -6,12 +6,12 @@ from leancloud import Query, Object
 
 __author__ = 'zhuyurun'
 __all__ = [
-   'BaseQuery', 'Pagination'
+    'BaseQuery', 'Pagination'
 ]
 
 
 class BaseQuery:
-    def __init__(self, query_class, news_type, descend_key):
+    def __init__(self, query_class=None, news_type=None, descend_key=None):
         self.query_class = query_class
         self.descend_key = descend_key
         self.news_type = news_type
@@ -46,9 +46,32 @@ class BaseQuery:
         if error_out and page < 1:
             abort(404)
 
-        items = Query(Object.extend(self.query_class)).equal_to('news_type', self.news_type).\
-            descending(key=self.descend_key).skip((page - 1) * per_page).limit(per_page).\
-            select('news_title','news_time').find()
+        if self.query_class:
+            items = Query(Object.extend(self.query_class))
+        else:
+            return None
+
+        if self.news_type:
+            items = items.equal_to('news_type', self.news_type)
+
+        if self.descend_key:
+            items = items.descending(key=self.descend_key)
+
+        if page:
+            items = items.skip((page - 1) * per_page)
+
+        if per_page:
+            items = items.limit(per_page)
+
+        # TODO select
+        items = items.select('news_type', 'news_title', 'news_time')
+
+        items = items.find()
+
+        #
+        # items = Query(Object.extend(self.query_class)).equal_to('news_type', self.news_type).\
+        #     descending(key=self.descend_key).skip((page - 1) * per_page).limit(per_page).\
+        #     select('news_title','news_time').find()
 
         if not items and page != 1 and error_out:
             abort(404)
@@ -56,13 +79,15 @@ class BaseQuery:
         if page == 1 and len(items) < per_page:
             total = len(items)
         else:
-            total = Query(Object.extend(self.query_class)).equal_to('news_type', self.news_type).count()
+            if self.news_type:
+                total = Query(Object.extend(self.query_class)).equal_to('news_type', self.news_type).count()
+            else:
+                total = Query(Object.extend(self.query_class)).count()
 
         return Pagination(page, per_page, total, items)
 
 
 class Pagination(Object):
-
     def __init__(self, page, per_page, total, items, **attrs):
         super(Pagination, self).__init__(**attrs)
         self.page = page
@@ -84,9 +109,8 @@ class Pagination(Object):
         for num in xrange(1, self.pages + 1):
             if num <= left_edge or \
                     (self.page - left_current - 1 < num < self.page + right_current) or \
-                    num > self.pages - right_edge:
-                    if last + 1 != num:
-                        yield None
-                    yield num
-                    last = num
-
+                            num > self.pages - right_edge:
+                if last + 1 != num:
+                    yield None
+                yield num
+                last = num

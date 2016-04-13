@@ -29,7 +29,7 @@ class Config(object):
     # STATIC_FOLDER = os.path.join(os.path.abspath(os.path.join(os.path.dirname("__file__"),os.path.pardir)), 'mulantrip', 'static/')
 
     #: site
-    SITE_TITLE = '桂林电子科技大学新闻汇总系统'
+    SITE_TITLE = '桂林电子科技大学新闻汇总平台'
 
     #: session
     SESSION_COOKIE_NAME = '_s'
@@ -85,8 +85,8 @@ class Testing(Config):
     WTF_CSRF_ENABLED = False
 
     # leancloud
-    APP_ID = "tQVcROVTI43C5NTD5TiNKG0r-gzGzoHsz"
-    MASTER_KEY = "vbiLt5t7YgzIPPREKK1Fj2la"
+    APP_ID = ""
+    MASTER_KEY = ""
     #: sqlalchemy
     # SQLALCHEMY_DATABASE_URI = 'sqlite:///%s' % os.path.join(os.getcwd(), 'db.sqlite')
 
